@@ -5,10 +5,15 @@ interface ListGroupProps {
   heading: string;
 }
 
-function ListGroup({ items, heading }: ListGroupProps) {
-  // Hook
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+function handleListItemClick(listItem: HTMLLIElement) {
+  const [previousListItem, setPreviousListItem] = useState<HTMLLIElement>(null);
+  if (previousListItem) {
+    previousListItem.classList.toggle("active");
+  }
+  listItem.classList.toggle("active");
+}
 
+function ListGroup({ items, heading }: ListGroupProps) {
   return (
     <>
       <h1>{heading}</h1>
@@ -16,14 +21,10 @@ function ListGroup({ items, heading }: ListGroupProps) {
       <ul className="list-group">
         {items.map((item, index) => (
           <li
-            className={
-              selectedIndex === index
-                ? "list-group-item active"
-                : "list-group-item"
-            }
+            className={"list-group-item"}
             key={item}
-            onClick={() => {
-              setSelectedIndex(index);
+            onClick={(event) => {
+              handleListItemClick(event.currentTarget, previousListItem);
             }}
           >
             {item}
