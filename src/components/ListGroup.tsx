@@ -5,12 +5,15 @@ interface ListGroupProps {
   heading: string;
 }
 
-function handleButtonClick(button: HTMLLIElement) {
-  button.classList.toggle("active");
+function handleListItemClick(listItem: HTMLLIElement) {
+  const [previousListItem, setPreviousListItem] = useState<HTMLLIElement>(null);
+  if (previousListItem) {
+    previousListItem.classList.toggle("active");
+  }
+  listItem.classList.toggle("active");
 }
 
 function ListGroup({ items, heading }: ListGroupProps) {
-
   return (
     <>
       <h1>{heading}</h1>
@@ -21,7 +24,7 @@ function ListGroup({ items, heading }: ListGroupProps) {
             className={"list-group-item"}
             key={item}
             onClick={(event) => {
-              handleButtonClick(event.currentTarget);
+              handleListItemClick(event.currentTarget, previousListItem);
             }}
           >
             {item}
